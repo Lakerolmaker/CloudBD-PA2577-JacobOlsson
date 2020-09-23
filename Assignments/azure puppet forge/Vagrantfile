@@ -1,0 +1,67 @@
+require 'yaml'
+$settings = YAML.load_file '../settings.yml'
+
+$iteration = '021'
+$node_name = 'node' + $iteration
+$resource_group_name = 'RG' + $iteration
+$virtual_network_name = 'VN' + $iteration
+$subnet_name = 'SN' + $iteration
+$nsg_name = 'NSGN' + $iteration
+
+$ports = ['7', '22', '80', '443', '4433', '5432', '8081', '8140', '8142' ,'8170']
+
+def create_vm(config, node_name)
+  config.vm.define node_name do |node|
+      node.vm.box = 'azure'
+      node.vm.hostname = node_name
+      node.ssh.private_key_path = 'C:\Users\jacob\.ssh\id_rsa'
+
+      for i in $ports
+          config.vm.network :forwarded_port, guest: i, host: i
+      end
+
+      node.vm.provider :azure do |azure, override|
+        azure.vm_name = node_name
+        azure.resource_group_name = node_name
+        azure.virtual_network_name = $virtual_network_name
+        azure.nsg_name = $nsg_name
+        azure.subnet_name = $subnet_name
+        azure.tcp_endpoints = $ports
+
+        azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
+        azure.location = "westeurope"
+        azure.vm_size = 'Standard_B1MS'
+
+        azure.tenant_id = $settings['config1']['tenant_id']
+        azure.client_id = $settings['config1']['client_id']
+        azure.client_secret = $settings['config1']['client_secret']
+        azure.subscription_id = $settings['config1']['subscription_id']
+      end
+
+      node.puppet_install.puppet_version = :latest
+      node.vm.provision "shell", path: "install_modules.sh"
+
+      node.vm.provision "puppet" do |puppet|
+        puppet.synced_folder_type = "rsync"
+        puppet.working_directory = '/vagrant'
+        puppet.environment_path="environments"
+        puppet.environment = "env1"
+        puppet.options = "--verbose --debug"
+      end
+
+    end
+end
+
+
+Vagrant.configure(2) do |config|
+
+  required_plugins = ['vagrant-puppet-install']
+  required_plugins.each do |plugin|
+    system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+  end
+
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+  create_vm(config, $node_name)
+
+end

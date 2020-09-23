@@ -1,0 +1,3 @@
+vagrant ssh client
+
+PAUSE

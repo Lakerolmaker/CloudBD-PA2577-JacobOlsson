@@ -1,0 +1,18 @@
+Vagrant.configure(2) do |config|
+  config.vm.box = "bento/ubuntu-18.04"
+
+required_plugins = []
+required_plugins.each do |plugin|
+  system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+end
+
+
+  config.vm.provision "shell", path: "install_puppet.sh"
+
+  config.vm.provision "puppet" do |puppet|
+    puppet.manifests_path = "manifests"
+    puppet.manifest_file = "default.pp"
+    puppet.options = "--verbose --debug"
+  end
+
+end

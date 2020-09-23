@@ -1,0 +1,3 @@
+vagrant ssh --debug
+
+PAUSE

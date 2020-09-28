@@ -1,7 +1,7 @@
 require 'yaml'
-$settings = YAML.load_file '../settings.yml'
+$settings = YAML.load_file '../../settings.yml'
 
-$iteration = '021'
+$iteration = '038'
 $resource_group_name = 'RG' + $iteration
 $virtual_network_name = 'VN' + $iteration
 $subnet_name = 'SN' + $iteration
@@ -55,6 +55,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
-  create_vm(config, 'appserver')
+  create_vm(config, 'appservernode')
+  create_vm(config, 'dbserver')
 
 end

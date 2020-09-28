@@ -1,14 +1,13 @@
 require 'yaml'
 $settings = YAML.load_file '../settings.yml'
 
-$iteration = '022'
+$iteration = '037'
 $resource_group_name = 'RG' + $iteration
 $virtual_network_name = 'VN' + $iteration
 $subnet_name = 'SN' + $iteration
 $nsg_name = 'NSGN' + $iteration
-
 $ports = ['7', '22', '80', '443', '4433', '5432', '8081', '8140', '8142' ,'8170']
- 
+
 def create_vm(config, node_name)
   config.vm.define node_name do |node|
 
@@ -30,7 +29,7 @@ def create_vm(config, node_name)
 
         azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
         azure.location = "westeurope"
-        azure.vm_size = 'Standard_B1MS'
+        azure.vm_size = 'Standard_D1_v2'
 
         azure.tenant_id = $settings['config1']['tenant_id']
         azure.client_id = $settings['config1']['client_id']
@@ -38,7 +37,7 @@ def create_vm(config, node_name)
         azure.subscription_id = $settings['config1']['subscription_id']
       end
 
-      node.vm.provision "shell", path: "install_modules.sh"
+      node.vm.provision "shell", path: "hadoop-download.sh"
 
     end
 end
@@ -53,8 +52,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
-  (2..2).each do |i|
-      create_vm(config, "ddosnode#{i}" )
-  end
+  create_vm(config, 'hadoop-test5')
 
 end

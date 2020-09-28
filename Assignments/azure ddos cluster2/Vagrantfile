@@ -1,11 +1,12 @@
 require 'yaml'
-$settings = YAML.load_file '../../settings.yml'
+$settings = YAML.load_file '../settings.yml'
 
-$iteration = '036'
+$iteration = '022'
 $resource_group_name = 'RG' + $iteration
 $virtual_network_name = 'VN' + $iteration
 $subnet_name = 'SN' + $iteration
 $nsg_name = 'NSGN' + $iteration
+
 $ports = ['7', '22', '80', '443', '4433', '5432', '8081', '8140', '8142' ,'8170']
 
 def create_vm(config, node_name)
@@ -20,8 +21,8 @@ def create_vm(config, node_name)
       end
 
       node.vm.provider :azure do |azure, override|
-        azure.vm_name = 'puppetnode'
-        azure.resource_group_name = 'puppetnode'
+        azure.vm_name = node_name
+        azure.resource_group_name = node_name
         azure.virtual_network_name = $virtual_network_name
         azure.nsg_name = $nsg_name
         azure.subnet_name = $subnet_name
@@ -29,16 +30,15 @@ def create_vm(config, node_name)
 
         azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
         azure.location = "westeurope"
-        azure.vm_size = 'Standard_D1_v2'
+        azure.vm_size = 'Standard_B1MS'
 
-        azure.tenant_id = $settings['config1']['tenant_id']
-        azure.client_id = $settings['config1']['client_id']
-        azure.client_secret = $settings['config1']['client_secret']
-        azure.subscription_id = $settings['config1']['subscription_id']
+        azure.tenant_id = $settings['config2']['tenant_id']
+        azure.client_id = $settings['config2']['client_id']
+        azure.client_secret = $settings['config2']['client_secret']
+        azure.subscription_id = $settings['config2']['subscription_id']
       end
 
-      node.vm.provision "shell", path: "install_puppet_master.sh"
-      node.vm.provision "shell", path: "start_puppet_server.sh"
+      node.vm.provision "shell", path: "install_modules.sh"
 
     end
 end
@@ -53,6 +53,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
-  create_vm(config, 'puppet')
+  (5..8).each do |i|
+      create_vm(config, "pennnode#{i}" )
+  end
 
 end

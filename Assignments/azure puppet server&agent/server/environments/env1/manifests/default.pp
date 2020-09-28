@@ -3,23 +3,9 @@ node /appserver.*/ {
   include nodejs
 }
 
-node /dbserver1.*/ {
+node /dbserver.*/ {
   include apt_get_update
   include mysql
-}
-
-node /web1.*/ {
-  include apt_get_update
-
-  package { 'nginx':
-    ensure => installed,
-    require => Exec['apt_get_update']
-  }
-
-  service { 'nginx':
-    ensure => 'running',
-    enable => true,
-  }
 }
 
 node default {

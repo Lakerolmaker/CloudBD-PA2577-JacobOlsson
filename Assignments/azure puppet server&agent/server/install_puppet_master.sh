@@ -7,7 +7,7 @@ sudo apt-get install puppetserver -y
 sudo /opt/puppetlabs/server/bin/puppetserver --version
 
 
-#sudo ufw allow 8140/tcp
+#6
 #sudo iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 8140 -j ACCEPT
 
 sudo -- sh -c -e "echo '*' >> /etc/puppetlabs/puppet/autosign.conf"

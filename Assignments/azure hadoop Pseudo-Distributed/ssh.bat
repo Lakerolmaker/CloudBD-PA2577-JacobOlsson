@@ -1,2 +1,2 @@
-vagrant ssh hadoop-test5
+vagrant ssh hadoop-pseudo-distributed2
 PAUSE

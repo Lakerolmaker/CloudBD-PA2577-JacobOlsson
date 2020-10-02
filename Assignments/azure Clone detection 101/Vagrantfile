@@ -1,0 +1,22 @@
+require 'yaml'
+$settings = YAML.load_file '../settings.yml'
+
+Vagrant.configure(2) do |config|
+  config.vm.box = 'azure'
+  config.ssh.private_key_path = 'C:\Users\jacob\.ssh\id_rsa'
+
+  config.vm.provider :azure do |azure, override|
+      override.vm.synced_folder ".", "/vagrant", disabled: true
+      azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
+      azure.location = "northeurope"
+      azure.tenant_id = $settings['config1']['tenant_id']
+      azure.client_id = $settings['config1']['client_id']
+      azure.client_secret = $settings['config1']['client_secret']
+      azure.subscription_id = $settings['config1']['subscription_id']
+
+      azure.tcp_endpoints = ['80']
+   end
+
+  config.vm.provision "shell", path: "install_modules.sh"
+
+end

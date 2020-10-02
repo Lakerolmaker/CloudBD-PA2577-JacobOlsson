@@ -37,7 +37,7 @@ def create_vm(config, node_name)
         azure.subscription_id = $settings['config1']['subscription_id']
       end
 
-      node.vm.provision "shell", path: "hadoop-download.sh"
+      node.vm.provision "shell", path: "setup_script.sh"
 
     end
 end
@@ -52,6 +52,6 @@ Vagrant.configure(2) do |config|
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
-  create_vm(config, 'hadoop-test5')
+  create_vm(config, 'hadoop-pseudo-distributed2')
 
 end

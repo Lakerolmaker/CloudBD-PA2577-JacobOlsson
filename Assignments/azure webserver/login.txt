@@ -1,0 +1,4 @@
+domain: adamserver.westeurope.cloudapp.azure.com
+ip : 52.166.58.86
+user: vagrant
+pass: 123456

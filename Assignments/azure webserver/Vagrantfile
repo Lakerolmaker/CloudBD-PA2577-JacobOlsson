@@ -1,0 +1,59 @@
+require 'yaml'
+$settings = YAML.load_file '../settings.yml'
+
+$iteration = '022'
+$resource_group_name = 'RG' + $iteration
+$virtual_network_name = 'VN' + $iteration
+$subnet_name = 'SN' + $iteration
+$nsg_name = 'NSGN' + $iteration
+
+$ports = ['7', '20', '21', '22', '80', 	'4242' , '4243']
+
+def create_vm(config, node_name)
+  config.vm.define node_name do |node|
+
+      node.vm.box = 'azure'
+      node.vm.hostname = node_name
+      node.ssh.private_key_path = 'C:\Users\jacob\.ssh\id_rsa'
+
+      for i in $ports
+          config.vm.network :forwarded_port, guest: i, host: i
+      end
+
+      node.vm.provider :azure do |azure, override|
+        azure.vm_name = node_name
+        azure.resource_group_name = node_name
+        azure.virtual_network_name = $virtual_network_name
+        azure.nsg_name = $nsg_name
+        azure.subnet_name = $subnet_name
+        azure.tcp_endpoints = $ports
+
+        azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
+        azure.location = "westeurope"
+        azure.vm_size = 'Standard_B1MS'
+
+        azure.tenant_id = $settings['adam_kumlin']['tenant_id']
+        azure.client_id = $settings['adam_kumlin']['client_id']
+        azure.client_secret = $settings['adam_kumlin']['client_secret']
+        azure.subscription_id = $settings['adam_kumlin']['subscription_id']
+      end
+
+      node.vm.provision "shell", path: "install_modules.sh"
+
+    end
+end
+
+
+Vagrant.configure(2) do |config|
+
+  required_plugins = ['vagrant-puppet-install']
+  required_plugins.each do |plugin|
+    system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+  end
+
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+  create_vm(config, "adamserver" )
+
+
+end

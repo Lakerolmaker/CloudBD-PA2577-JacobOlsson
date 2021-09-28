@@ -4,7 +4,7 @@
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 
-HADOOP_VER=hadoop-3.2.1
+HADOOP_VER=hadoop-3.2.2
 HADOOP_ROOT_ROOT=/usr/local
 HADOOP_ROOT=$HADOOP_ROOT_ROOT/hadoop
 HADOOP_HOME=$HADOOP_ROOT

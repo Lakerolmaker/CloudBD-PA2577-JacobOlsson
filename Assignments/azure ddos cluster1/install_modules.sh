@@ -1,5 +1,5 @@
-sudo /usr/bin/apt-get update
-sudo apt install hping3 -y
+#sudo /usr/bin/apt-get update
+#sudo apt install hping3 -y
 
 #ip='83.233.111.182'
 # sudo hping3 -S --flood -V  -p $ip

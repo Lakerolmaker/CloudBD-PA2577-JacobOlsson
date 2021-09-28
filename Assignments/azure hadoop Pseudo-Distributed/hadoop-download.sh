@@ -15,11 +15,8 @@ if [ ! -d "$HADOOP_HOME" ] ; then
     pushd "$HADOOP_ROOT"
     wget http://apache.mirrors.spacedump.net/hadoop/common/$HADOOP_VER/$HADOOP_VER.tar.gz
     tar -zxf $HADOOP_VER.tar.gz
-#    rm $HADOOP_VER.tar.gz
-    mv $HADOOP_VER/* $HADOOP_ROOT    
+    mv $HADOOP_VER/* $HADOOP_ROOT
     popd
-
-    echo "source /vagrant/hadoop-common.sh" >> ~/.bashrc
 else
     echo "Not installing $HADOOP_VER in $HADOOP_ROOT Already installed."
 fi

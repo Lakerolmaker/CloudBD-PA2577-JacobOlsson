@@ -1,7 +1,7 @@
 require 'yaml'
 $settings = YAML.load_file '../settings.yml'
 
-$iteration = '037'
+$iteration = '44'
 $resource_group_name = 'RG' + $iteration
 $virtual_network_name = 'VN' + $iteration
 $subnet_name = 'SN' + $iteration
@@ -45,13 +45,13 @@ end
 
 Vagrant.configure(2) do |config|
 
-  required_plugins = ['vagrant-puppet-install']
+  required_plugins = ['']
   required_plugins.each do |plugin|
     system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
   end
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
-  create_vm(config, 'hadoop-pseudo-distributed2')
+  create_vm(config, 'hadoop-pseudo-distributed' +  $iteration)
 
 end

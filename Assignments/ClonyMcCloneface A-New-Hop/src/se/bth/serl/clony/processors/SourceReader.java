@@ -24,6 +24,8 @@ package se.bth.serl.clony.processors;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -99,17 +101,18 @@ public class SourceReader {
 	}
 	
 	private static List<String> readFileContent(File file) {
-		List<String> lines = null; 
-		
+		return readFile(file);		
+	}
+	
+	static int index = 0;
+	public static List<String> readFile(File file){
+		Charset[] formats = {StandardCharsets.UTF_8, StandardCharsets.US_ASCII, StandardCharsets.ISO_8859_1};
 		try {
-			lines = Files.readAllLines(file.toPath());
+			return Files.readAllLines(file.toPath(), formats[index]);
+		} catch (Exception e) {
+			index++;
+			return readFile(file);
 		}
-		catch(IOException e) {
-			e.printStackTrace();
-			System.err.println("Could not read file: " + file.getAbsoluteFile());
-		}
-		
-		return lines;
 	}
 	
 

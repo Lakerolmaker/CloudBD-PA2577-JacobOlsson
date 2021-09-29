@@ -18,7 +18,7 @@ hdfs dfs -put $HADOOP_HOME/README.txt input
 #sudo nano /usr/local/hadoop-3.2.2/etc/hadoop/yarn-site.xml
 
 #hdfs --daemon start datanode
-#hdfs dfs -put /usr/local/hadoop-3.2.2/*.txt input
+#hdfs dfs -put /usr/local/hadoop-3.2.2/README.txt input
 #sudo rm -r /tmp/*
 #hadoop fs -ls /
 

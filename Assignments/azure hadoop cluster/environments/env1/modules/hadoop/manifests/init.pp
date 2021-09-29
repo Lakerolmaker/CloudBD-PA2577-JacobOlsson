@@ -6,11 +6,12 @@ class hadoop {
   $hadoop_ver = "3.2.2"
   $hadoop_dir = "/usr/local/hadoop-${hadoop_ver}"
   $path = "${path}:${hadoop_dir}/sbin:${hadoop_dir}/bin"
-  $jhome = "/usr/lib/jvm/java-8-openjdk-amd64" 
+  $jhome = "/usr/lib/jvm/java-8-openjdk-amd64"
   $user = "vagrant"
 
   exec { "download_hadoop":
     command => "wget -O /vagrant/hadoop.tar.gz http://apache.mirrors.spacedump.net/hadoop/common/hadoop-${hadoop_ver}/hadoop-${hadoop_ver}.tar.gz",
+    timeout => 3600,
     path => $path,
     unless => ["ls /usr/local/ | grep hadoop-${hadoop_ver}", "test -f /vagrant/hadoop.tar.gz"],
     require => Package["openjdk-8-jdk"],

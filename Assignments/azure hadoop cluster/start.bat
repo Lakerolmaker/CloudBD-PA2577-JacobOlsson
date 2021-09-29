@@ -1,3 +1,3 @@
-vagrant up --provider=azure --parallel
+vagrant up --provider=azure
 
 PAUSE

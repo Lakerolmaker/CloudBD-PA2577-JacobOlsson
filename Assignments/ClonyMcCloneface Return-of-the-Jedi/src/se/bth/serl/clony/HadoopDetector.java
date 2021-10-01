@@ -40,6 +40,10 @@ public class HadoopDetector extends Configured implements Tool {
 
 	@Override
 	public int run(String[] args) throws Exception {
+		//: Print args
+		System.out.println("Arg0:" + args[0]);
+		System.out.println("Arg1:" + args[1]);
+		
 		Path input = new Path(args[0]);
 		Path output = new Path(args[1]);
 		Path outputChunker = new Path(output, "chunker");

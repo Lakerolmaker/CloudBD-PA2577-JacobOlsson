@@ -33,3 +33,10 @@ hdfs dfs -put $HADOOP_HOME/README.txt input
 #start
 #hdfs namenode -format -force
 #start-dfs.sh
+
+
+#seq files
+#java -jar toSeq.jar QualitasCorpus/ full.seq
+#java -jar toSeq.jar QualitasCorpus/QualitasCorpus-20130901r/Systems/ant/ant-1.8.4/src/apache-ant-1.8.4/src small.seq
+#hdfs dfs -put full.seq input
+#hdfs dfs -put small.seq input

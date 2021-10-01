@@ -9,7 +9,7 @@ limitations under the License. See accompanying LICENSE file. -->
 <configuration>
   <property>
     <name>dfs.replication</name>
-    <value>1</value>
+    <value>3</value>
   </property>
 
   <!-- Don't put the filesystem under /tmp -->

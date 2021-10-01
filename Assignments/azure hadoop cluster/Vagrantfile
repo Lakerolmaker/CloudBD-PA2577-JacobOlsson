@@ -5,7 +5,7 @@ r = Random.new
 $random_number = r.rand(1000...5000)
 
 #$iteration = $random_number.to_s
-$iteration = "66"
+$iteration = "68"
 $resource_group_name = 'RG' + $iteration
 $virtual_network_name = 'VN' + $iteration
 $subnet_name = 'SN' + $iteration

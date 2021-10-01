@@ -66,5 +66,11 @@ public class ExpanderMapper extends Mapper<Text, ChunkArrayWritable, Clone, Null
 		
 		listOfInstances = chunks.expand(listOfInstances, -1);
 		//TODO Write the correct key/value pairs to the context
+		
+		//: create clone from list of instances
+		Clone expandedClone = new Clone(listOfInstances);
+		
+		// write clone.
+		context.write(expandedClone, NullWritable.get());
 	}
 }

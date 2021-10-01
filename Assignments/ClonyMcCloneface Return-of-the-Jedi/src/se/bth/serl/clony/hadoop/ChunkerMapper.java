@@ -65,6 +65,14 @@ public class ChunkerMapper extends Mapper<Text, Text, Text, Chunk> {
 			
 			//TODO Write the correct key/value pairs to the context
 			
+			//: Get the hashcode from the chuck class. (from Mikeal)
+			int hashcode = c.getChunkContent().hashCode();
+			String hash_string = String.valueOf(hashcode);
+			Text text = new Text(hash_string); 
+			
+			//: Write the chunk.
+			context.write(text, c);
+			
 			chunks.add(c);
 		}
 		

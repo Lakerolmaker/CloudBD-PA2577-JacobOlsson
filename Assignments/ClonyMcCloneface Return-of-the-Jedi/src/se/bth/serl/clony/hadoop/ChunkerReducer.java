@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import se.bth.serl.clony.chunks.Chunk;
@@ -20,6 +21,17 @@ public class ChunkerReducer extends Reducer<Text, Chunk, Text, ChunkArrayWritabl
 		
 		if(instances.size() > 1) {
 			//TODO Write the correct key/value pairs to the context
+			
+			// array of content (chunks)
+			Writable[] writable = new Writable[instances.size()];
+			
+			// Writable
+			ChunkArrayWritable chunkarr = new ChunkArrayWritable(writable);
+
+			//: Key + ChunkArrayWritable
+			context.write(key,chunkarr);	
+			
+			
 		}
 	
 	}

@@ -40,3 +40,13 @@ hdfs dfs -put $HADOOP_HOME/README.txt input
 #java -jar toSeq.jar QualitasCorpus/QualitasCorpus-20130901r/Systems/ant/ant-1.8.4/src/apache-ant-1.8.4/src small.seq
 #hdfs dfs -put full.seq input
 #hdfs dfs -put small.seq input
+
+
+#run hadoop
+#hadoop jar hadoopdetector.jar input/small.seq hdfs://master/hadoop/small.seq 128
+
+
+#transfer
+#mkdir /vagrant/seq
+#hdfs dfs -get /hadoop/small.seq/* /vagrant/seq
+#sudo scp -r /vagrant/seq/ lakerolmaker@81.230.72.203:/home/hadoop

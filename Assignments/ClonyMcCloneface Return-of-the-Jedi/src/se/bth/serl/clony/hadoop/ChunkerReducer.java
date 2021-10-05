@@ -23,8 +23,8 @@ public class ChunkerReducer extends Reducer<Text, Chunk, Text, ChunkArrayWritabl
 			//TODO Write the correct key/value pairs to the context
 			
 			// array of content (chunks)
-			Writable[] writable = new Writable[instances.size()];
-			
+			Writable[] writable = instances.toArray(new Chunk[instances.size()]);
+				
 			// Writable
 			ChunkArrayWritable chunkarr = new ChunkArrayWritable(writable);
 

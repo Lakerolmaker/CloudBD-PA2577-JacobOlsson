@@ -44,7 +44,6 @@ public class readexpander {
 		Configuration conf = new Configuration();
 		  try {
 		   Path inFile = new Path(args[0]);
-		   TextOutputFormat
 		   SequenceFile.Reader reader = new SequenceFile.Reader(FileSystem.get(conf), inFile, conf);
 		   try {
 			WritableComparable key = (WritableComparable) Clone.class.newInstance();

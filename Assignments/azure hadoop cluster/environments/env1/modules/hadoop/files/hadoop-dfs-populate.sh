@@ -34,6 +34,13 @@ hdfs dfs -put $HADOOP_HOME/README.txt input
 #hdfs namenode -format -force
 #start-dfs.sh
 
+#dowload QualitasCorpus
+#sh qualitas-corpus-download.sh
+
+#read
+#hdfs dfs -cat /hadoop/small.seq/indexer/part-r-00000/data
+#hdfs dfs -cat /hadoop2/small.seq/expander/part-r-00000
+
 
 #seq files
 #java -jar toSeq.jar QualitasCorpus/ full.seq

@@ -94,6 +94,14 @@ class hadoop {
     group => $user,
   }
 
+  file {
+  "/home/${user}/qualitas-corpus-download.sh":
+    source => "puppet:///modules/hadoop/qualitas-corpus-download.sh",
+    mode => "755",
+    owner => $user,
+    group => $user,
+  }
+
   exec { "persmissions1":
     command => "cat /home/${user}/hadoop-common.sh >> /home/vagrant/.bashrc",
     path =>  [ '/bin/sh', '/bin/bash', '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ],

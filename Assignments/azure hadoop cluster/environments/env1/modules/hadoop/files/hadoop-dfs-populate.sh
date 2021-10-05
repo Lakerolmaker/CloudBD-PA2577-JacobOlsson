@@ -50,7 +50,7 @@ hdfs dfs -put $HADOOP_HOME/README.txt input
 
 
 #run hadoop
-#hadoop jar hadoopdetector.jar input/small.seq hdfs://master/hadoop/small.seq 128
+#hadoop jar hadoopdetector.jar input/small.seq hdfs://master/hadoop/small.seq 5
 
 
 #transfer

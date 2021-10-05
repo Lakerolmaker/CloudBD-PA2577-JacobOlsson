@@ -92,14 +92,25 @@ node /master.*/ {
      logoutput => true,
    }
 
+   exec { "dowload-qualitas-corpus":
+     command => "/home/${user}/qualitas-corpus-download.sh",
+     path => $path,
+     require => [File["/home/${user}/qualitas-corpus-download.sh"]],
+     user => $user,
+     loglevel => debug,
+     logoutput => true,
+   }
+
   exec { "populate":
     command => "/home/${user}/hadoop-dfs-populate.sh",
     path => $path,
-    require => [File["/home/${user}/hadoop-common.sh"],File["/home/${user}/hadoop-dfs-populate.sh"], Exec["start_dfs"], Exec["jps"], Exec["start_yarn"]],
+    require => [File["/home/${user}/hadoop-common.sh"],File["/home/${user}/hadoop-dfs-populate.sh"], Exec["start_dfs"], Exec["dowload-qualitas-corpus"], Exec["start_yarn"]],
     user => $user,
     loglevel => debug,
     logoutput => true,
   }
+
+
 
   notify {"Started Master Node":}
 }

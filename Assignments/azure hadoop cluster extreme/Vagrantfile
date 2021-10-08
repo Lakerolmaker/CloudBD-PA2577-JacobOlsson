@@ -1,0 +1,92 @@
+require 'yaml'
+$settings = YAML.load_file '../settings.yml'
+
+r = Random.new
+$random_number = r.rand(1000...5000)
+
+#$iteration = $random_number.to_s
+$iteration = "73"
+$resource_group_name = 'RG' + $iteration
+$virtual_network_name = 'VN' + $iteration
+$subnet_name = 'SN' + $iteration
+$nsg_name = 'NSGN' + $iteration
+$ports = [ '22', '23', '443', '8141', '8020', '8080', '8088', '8088', '8090', '8030', '8031', '8032', '8040', '8042', '8188', '9000', '9866', '9870',
+  '9868', '9867', '9864', '1527', '50090', '9083', '10000', '10002', '50111', '10020', '10033', '10200', '19888', '50010', '50020', '50070', '50075', '50475', '1019',
+  '30050', '30060', '10200','8188', '19888', '10020', '13562', ]
+
+# HDFS webUi-port : 9870
+# Hadoop cluster WebUi-port : 8088
+
+def create_vm(config, node_name)
+  config.vm.define node_name do |node|
+
+      node.vm.box = 'azure'
+      node.vm.hostname = node_name
+      node.ssh.private_key_path = 'C:\Users\jacob\.ssh\id_rsa'
+
+      for i in $ports
+          node.vm.network :forwarded_port, guest: i, host: i
+      end
+
+
+      node.vm.provider :azure do |azure, override|
+        azure.vm_name = node_name
+        azure.resource_group_name = $resource_group_name
+        azure.virtual_network_name = $virtual_network_name
+        azure.nsg_name = $nsg_name
+        azure.dns_name = node_name + $iteration
+        azure.subnet_name = $subnet_name
+        azure.tcp_endpoints = $ports
+
+        azure.vm_image_urn = 'Canonical:UbuntuServer:18.04-LTS:latest'
+        azure.location = "westeurope"
+        azure.vm_size = 'Standard_D1_v2'
+
+        azure.tenant_id = $settings['config1']['tenant_id']
+        azure.client_id = $settings['config1']['client_id']
+        azure.client_secret = $settings['config1']['client_secret']
+        azure.subscription_id = $settings['config1']['subscription_id']
+      end
+
+      node.vm.provision "shell", path: "install_puppet.sh"
+
+      node.vm.provision "puppet" do |puppet|
+        puppet.synced_folder_type = "rsync"
+        puppet.working_directory = '/vagrant'
+        puppet.environment_path="environments"
+        puppet.environment = "env1"
+        puppet.manifests_path = "environments/env1/manifests"
+        puppet.manifest_file = "base-hadoop.pp"
+        puppet.options = "--verbose --debug"
+      end
+
+
+    end
+end
+
+
+Vagrant.configure(2) do |config|
+
+  required_plugins = ['vagrant-puppet-install']
+  required_plugins.each do |plugin|
+    system "vagrant plugin install #{plugin}" unless Vagrant.has_plugin? plugin
+  end
+
+  config.vm.synced_folder ".", "/vagrant", type: "rsync"
+
+  create_vm(config, 'worker0')
+  create_vm(config, 'worker1')
+  create_vm(config, 'worker2')
+  create_vm(config, 'worker3')
+  create_vm(config, 'worker4')
+  create_vm(config, 'worker5')
+  create_vm(config, 'worker6')
+  create_vm(config, 'worker7')
+  create_vm(config, 'worker8')
+  create_vm(config, 'worker9')
+
+
+  create_vm(config, 'master')
+
+
+end

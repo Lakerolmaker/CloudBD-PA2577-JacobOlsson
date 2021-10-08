@@ -5,7 +5,7 @@ r = Random.new
 $random_number = r.rand(1000...5000)
 
 #$iteration = $random_number.to_s
-$iteration = "68"
+$iteration = "71"
 $resource_group_name = 'RG' + $iteration
 $virtual_network_name = 'VN' + $iteration
 $subnet_name = 'SN' + $iteration
@@ -14,7 +14,7 @@ $ports = [ '22', '23', '443', '8141', '8020', '8080', '8088', '8088', '8090', '8
   '9868', '9867', '9864', '1527', '50090', '9083', '10000', '10002', '50111', '10020', '10033', '10200', '19888', '50010', '50020', '50070', '50075', '50475', '1019',
   '30050', '30060', '10200','8188', '19888', '10020', '13562', ]
 
-def create_vm(config, node_name, ip)
+def create_vm(config, node_name)
   config.vm.define node_name do |node|
 
       node.vm.box = 'azure'
@@ -25,7 +25,6 @@ def create_vm(config, node_name, ip)
           node.vm.network :forwarded_port, guest: i, host: i
       end
 
-      node.vm.network :private_network, ip: ip
 
       node.vm.provider :azure do |azure, override|
         azure.vm_name = node_name
@@ -72,10 +71,10 @@ Vagrant.configure(2) do |config|
 
   config.vm.synced_folder ".", "/vagrant", type: "rsync"
 
-  create_vm(config, 'worker0', '10.0.0.7')
-  create_vm(config, 'worker1', '10.0.0.8')
-  create_vm(config, 'worker2', '10.0.0.9')
-  create_vm(config, 'master', '10.0.0.10')
+  create_vm(config, 'worker0')
+  create_vm(config, 'worker1')
+  create_vm(config, 'worker2')
+  create_vm(config, 'master')
 
 
 end

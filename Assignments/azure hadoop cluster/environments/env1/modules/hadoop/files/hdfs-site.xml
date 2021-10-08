@@ -69,7 +69,7 @@ limitations under the License. See accompanying LICENSE file. -->
     </description>
   </property>
 
-  <property>
+  <!-- <property>
     <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
     <value>false</value>
     <description>namenode does not requires that a connecting datanode's address must be resolved to a hostname
@@ -88,7 +88,7 @@ limitations under the License. See accompanying LICENSE file. -->
     <value>false</value>
     <description>Whether datanode should use datanode hostnames when connecting to datanodes.
     </description>
-  </property>
+  </property> -->
 
 
 </configuration>

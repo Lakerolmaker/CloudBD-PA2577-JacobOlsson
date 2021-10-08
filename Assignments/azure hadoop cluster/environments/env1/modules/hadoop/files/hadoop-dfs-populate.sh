@@ -51,7 +51,16 @@ hdfs dfs -put $HADOOP_HOME/README.txt input
 
 #run hadoop
 #hadoop jar hadoopdetector.jar input/small.seq hdfs://master/hadoop/small.seq 5
+#hadoop jar hadoopdetector_modied.jar input/small.seq hdfs://master/hadoop/small.seq 5
+#hadoop jar hadoopdetector.jar input/full.seq hdfs://master/hadoop/full.seq 5
 
+#read output
+#hdfs dfs -text /hadoop/
+
+
+#fasthashdetector
+#java -jar fasthashdetector.jar QualitasCorpus/QualitasCorpus-20130901r/Systems/ant/ant-1.8.4/src/apache-ant-1.8.4/src 5
+#java -jar fasthashdetector.jar QualitasCorpus/ 5
 
 #transfer
 #mkdir /vagrant/seq

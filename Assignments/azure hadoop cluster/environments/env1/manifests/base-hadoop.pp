@@ -96,6 +96,7 @@ node /master.*/ {
      command => "/home/${user}/qualitas-corpus-download.sh",
      path => $path,
      require => [File["/home/${user}/qualitas-corpus-download.sh"]],
+     timeout => 3600,
      user => $user,
      loglevel => debug,
      logoutput => true,

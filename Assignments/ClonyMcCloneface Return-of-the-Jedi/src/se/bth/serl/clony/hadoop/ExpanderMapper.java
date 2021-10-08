@@ -28,6 +28,7 @@ public class ExpanderMapper extends Mapper<Text, ChunkArrayWritable, Clone, Null
 	@Override
 	public void setup(Context context) throws IOException, InterruptedException {
 		Path path = new Path(context.getConfiguration().get(HadoopDetector.CONFIG_LOOKUPBYFILEDIR));
+		System.out.println("Path is : " + path.toString());
 		readers = MapFileOutputFormat.getReaders(path, context.getConfiguration());
 	}
 	

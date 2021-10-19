@@ -83,7 +83,7 @@ public class HadoopDetector_modified extends Configured implements Tool {
         
         //Secondary output produced in the mapper
         MultipleOutputs.addNamedOutput(chunkingJob, chunkingConf.get(CONFIG_CHUNKSNAMEDOUTPUT), 
-        		SequenceFileOutputFormat.class, Text.class, ChunkArrayWritable.class);
+        		MapFileOutputFormat.class, Text.class, ChunkArrayWritable.class);
         
         
         Path tempDir = new Path(outputChunker, chunkingConf.get(CONFIG_TEMPDIR));
